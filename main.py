@@ -3,7 +3,6 @@ import os
 import jinja2
 import webapp2
 
-
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
 
@@ -30,6 +29,25 @@ class MainHandler(BaseHandler):
     def get(self):
         return self.render_template("index.html")
 
+    def post(self):
+        first_num = float(self.request.get("first-num"))
+        second_num = float(self.request.get("second-num"))
+        operation = self.request.get("operation")
+
+        result = None
+
+        if operation == "+":
+            result = first_num + second_num
+        elif operation == "-":
+            result = first_num - second_num
+        elif operation == "*":
+            result = first_num * second_num
+        elif operation == "/":
+            result = first_num / second_num
+
+        params = {'result': result}
+
+        return self.render_template('result.html', params=params)
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
